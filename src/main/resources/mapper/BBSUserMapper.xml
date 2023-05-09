@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bee.community.dao.BBSUserMapper">
+  <resultMap id="BaseResultMap" type="com.bee.community.entity.BBSUser">
+    <id column="id" jdbcType="BIGINT" property="userId" />
+    <result column="user_email" jdbcType="VARCHAR" property="loginName" />
+    <result column="sys_user_pwd" jdbcType="VARCHAR" property="passwordMd5" />
+    <result column="sys_user_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="head_img_url" jdbcType="VARCHAR" property="headImgUrl" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="introduce" jdbcType="VARCHAR" property="introduce" />
+    <result column="user_status" jdbcType="TINYINT" property="userStatus" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="reg_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_email, sys_user_pwd, sys_user_name, head_img_url, gender, location, introduce,
+    user_status, last_login_time, reg_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_bbs_user
+    where id = #{userId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByPrimaryKeys" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_bbs_user
+    where id in
+    <foreach item="userId" collection="userIds" open="(" separator="," close=")">
+      #{userId,jdbcType=BIGINT}
+    </foreach>
+  </select>
+  <select id="selectByLoginName" resultType="com.bee.community.entity.BBSUser">
+    select
+    <include refid="Base_Column_List" />
+    from tb_bbs_user
+    where user_email = #{loginName,jdbcType=VARCHAR} limit 1
+  </select>
+
+  <select id="selectByLoginNameAndPasswd" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_bbs_user
+    where user_email = #{loginName} and sys_user_pwd = #{password}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_bbs_user
+    where id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bee.community.entity.BBSUser">
+    insert into tb_bbs_user (id, user_email, sys_user_pwd,
+      sys_user_name, head_img_url, gender,
+      location, introduce, user_status, 
+      last_login_time, reg_time)
+    values (#{userId,jdbcType=BIGINT}, #{loginName,jdbcType=VARCHAR}, #{passwordMd5,jdbcType=VARCHAR},
+      #{nickName,jdbcType=VARCHAR}, #{headImgUrl,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
+      #{location,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}, #{userStatus,jdbcType=TINYINT}, 
+      #{lastLoginTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bee.community.entity.BBSUser">
+    insert into tb_bbs_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        id,
+      </if>
+      <if test="loginName != null">
+        user_email,
+      </if>
+      <if test="passwordMd5 != null">
+        sys_user_pwd,
+      </if>
+      <if test="nickName != null">
+        sys_user_name,
+      </if>
+      <if test="headImgUrl != null">
+        head_img_url,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="location != null">
+        location,
+      </if>
+      <if test="introduce != null">
+        introduce,
+      </if>
+      <if test="userStatus != null">
+        user_status,
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time,
+      </if>
+      <if test="createTime != null">
+        reg_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="loginName != null">
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="passwordMd5 != null">
+        #{passwordMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="headImgUrl != null">
+        #{headImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null">
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="introduce != null">
+        #{introduce,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null">
+        #{userStatus,jdbcType=TINYINT},
+      </if>
+      <if test="lastLoginTime != null">
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bee.community.entity.BBSUser">
+    update tb_bbs_user
+    <set>
+      <if test="loginName != null">
+        user_email = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="passwordMd5 != null">
+        sys_user_pwd = #{passwordMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        sys_user_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="headImgUrl != null">
+        head_img_url = #{headImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null">
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="introduce != null">
+        introduce = #{introduce,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null">
+        user_status = #{userStatus,jdbcType=TINYINT},
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        reg_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bee.community.entity.BBSUser">
+    update tb_bbs_user
+    set user_email = #{loginName,jdbcType=VARCHAR},
+      sys_user_pwd = #{passwordMd5,jdbcType=VARCHAR},
+      sys_user_name = #{nickName,jdbcType=VARCHAR},
+      head_img_url = #{headImgUrl,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=VARCHAR},
+      location = #{location,jdbcType=VARCHAR},
+      introduce = #{introduce,jdbcType=VARCHAR},
+      user_status = #{userStatus,jdbcType=TINYINT},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      reg_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByEmail" parameterType="com.bee.community.entity.BBSUser">
+    set user_email = #{loginName,jdbcType=VARCHAR},
+    sys_user_pwd = #{passwordMd5,jdbcType=VARCHAR},
+    sys_user_name = #{nickName,jdbcType=VARCHAR},
+    head_img_url = #{headImgUrl,jdbcType=VARCHAR},
+    gender = #{gender,jdbcType=VARCHAR},
+    location = #{location,jdbcType=VARCHAR},
+    introduce = #{introduce,jdbcType=VARCHAR},
+    user_status = #{userStatus,jdbcType=TINYINT},
+    last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+    reg_time = #{createTime,jdbcType=TIMESTAMP}
+    where sys_user_name = #{nickName,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header::head-fragment('个人主页')">
+
+</head>
+<body style="margin-top: 65px;">
+
+<div th:replace="header::header-fragment"></div>
+
+<div class="fly-home fly-panel"
+     style='background-image: url(https://cdn.pixabay.com/photo/2020/09/03/03/43/abstract-5540113_1280.png);
+     background-size: 100% auto;
+     background-position: 0 -220px;'>
+    <img th:src="@{${bbsUser.headImgUrl}}" th:alt="${bbsUser.nickName}">
+    <h1>
+        <th:block th:text="${bbsUser.nickName}"></th:block>
+        <th:block th:if="${bbsUser.gender=='男'}">
+            <i class="iconfont icon-nan"></i>
+        </th:block>
+        <th:block th:if="${bbsUser.gender=='女'}">
+            <i class="iconfont icon-nv"></i>
+        </th:block>
+        <th:block th:if="${bbsUser.gender=='其他'}">
+<!--            <i class="iconfont icon-biaoqing"></i>-->
+        </th:block>
+        <th:block th:if="${bbsUser.gender=='未知'}">
+<!--            <i class="iconfont icon-biaoqing"></i>-->
+        </th:block>
+    </h1>
+
+    <p class="fly-home-info" style="padding-top: 5px;">
+        <span>
+        <th:block th:if="${bbsUser.userStatus==0}">
+            <i class="iconfont icon-biaoqing1"></i>
+            账号正常
+        </th:block>
+        <th:block th:if="${bbsUser.userStatus==1}">
+            <i class="iconfont icon-biaoqing"></i>
+            账号已被禁用
+        </th:block>
+        </span>
+        <i class="iconfont icon-shijian"></i><span th:text="${#dates.format(bbsUser.createTime, 'yyyy-MM-dd')+' 加入'}"/>
+        <i class="iconfont icon-chengshi"></i><span th:text="${bbsUser.location}"></span>
+
+        <th:block th:if="${session.myBBSUser.userId==bbsUser.userId}">
+        <a th:href="@{/userSet}">
+            <button class="button-btn-person" style="position: absolute;left: 1090px;">编辑个人资料</button></a>
+        </th:block>
+    </p>
+
+    <p class="fly-home-sign" th:text="${bbsUser.introduce}"></p>
+</div>
+
+<div class="layui-container">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6 fly-home-jie">
+            <div class="fly-panel">
+                <h3 class="fly-panel-title">
+                    <a href=""> <th:block th:text="${bbsUser.nickName}"></th:block></a>
+                    最近发布帖子
+                </h3>
+                <ul class="jie-row">
+
+                    <th:block th:unless="${#lists.isEmpty(recentPostList)}">
+                        <th:block th:each="bbsPost : ${recentPostList}">
+                            <li>
+                                <a th:href="@{${'/detail/'+bbsPost.postId}}"
+                                   th:text="${bbsPost.postTitle}">/a>
+                                <i th:text="${#dates.format(bbsPost.createTime, 'yyyy/MM/dd HH:mm:ss')}"></i>
+                                <em class="layui-hide-xs">
+                                    <th:block th:text="${bbsPost.postViews}"></th:block>
+                                    阅/
+                                    <th:block th:text="${bbsPost.postComments}"></th:block>
+                                    答</em>
+                                </a>
+                            </li>
+                        </th:block>
+                    </th:block>
+
+                    <th:block th:if="${#lists.isEmpty(recentPostList)}">
+                        <!-- 无数据时 -->
+                        <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;">
+                            <i style="font-size:14px;">最近没有发布帖子</i></div>
+                    </th:block>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-col-md6 fly-home-da">
+            <div class="fly-panel">
+                <h3 class="fly-panel-title">
+                    <a href=""> <th:block th:text="${bbsUser.nickName}"></th:block></a>
+                    最近评论
+                </h3>
+                <ul class="home-jieda">
+                    <th:block th:if="${#lists.isEmpty(recentCommentList)}">
+                        <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"><span>最近没有评论</span>
+                        </div>
+                    </th:block>
+
+                    <th:block th:unless="${#lists.isEmpty(recentCommentList)}">
+                        <th:block th:each="recentComment : ${recentCommentList}">
+                            <li>
+                                <p>
+                                    <span th:text="${#dates.format(recentComment.commentCreateTime, 'yyyy/MM/dd HH:mm:ss')}">1分钟前</span>
+                                    在<a th:href="@{${'/detail/'+recentComment.postId}}"
+                                        th:text="${recentComment.postTitle}" target="_blank"></a>
+                                </p>
+                                <div class="home-dacontent" th:text="${recentComment.commentBody}">
+                                </div>
+                            </li>
+                        </th:block>
+                    </th:block>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fly-footer">
+    <p>蜂巢论坛 © 2023</p>
+</div>
+
+<script th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript">
+    layui.use(['layer', 'element', 'jquery'], function () {
+        var layer = layui.layer, $ = layui.$, element = layui.element;
+        var device = layui.device();
+        //阻止IE7以下访问
+        if (device.ie && device.ie < 8) {
+            layer.alert('如果您非得使用 IE 浏览器访问社区，那么请使用 IE8+');
+        }
+    });
+
+</script>
+</body>
+</html>

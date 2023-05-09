@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" th:href="@{/pear/css/pear.css}">
+    <link rel="stylesheet" th:href="@{/css/error.css}">
+</head>
+<body>
+<div class="content">
+    <img th:src="@{/images/500.svg}"  alt="">
+    <div class="content-r">
+        <h1>你的请求出错了</h1>
+        <p th:text="${message}" ></p>
+        <a href="http://localhost:8042/">
+            <button class="pear-btn pear-btn-primary">返回首页</button>
+        </a>    </div>
+</div>
+<script th:src="@{/pear/pear.js}"></script>
+<script th:src="@{/layui/layui2.js}"></script>
+</body>
+</html>

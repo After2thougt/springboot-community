@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head-fragment(title)">
+    <meta charset="UTF-8">
+    <title th:text="${title}">蜂巢论坛</title>
+    <link rel="shortcut icon" th:href="@{/images/bee-icon.png}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+</head>
+
+<div th:fragment="header-fragment" class="fly-header layui-bg-black">
+    <div class="layui-container">
+        <a class="fly-logo" href="http://localhost:8042/" style="filter: contrast(200%);">
+            <img th:src="@{/images/bee-logo.png}" alt="My-BBS">
+        </a>
+        <ul class="layui-nav fly-nav layui-hide-xs">
+            <li class="layui-nav-item">
+                <a href="http://localhost:8042/"><i class="iconfont icon-daima"></i>首页</a>
+            </li>
+
+            <li class="layui-nav-item">
+                <a th:href="@{/myCenter}">
+                    <i class="iconfont icon-daima"></i>我的帖子</a>
+                <!--{{#  if(d.userId){ }}
+                <a th:href="@{${'/userCenter/'+bbsUser.userId}}">
+                    <i class="iconfont icon-daima"></i>个人主页</a>
+                {{#  } }}-->
+            </li>
+
+            <li class="layui-nav-item">
+                <a th:href="@{/about}"><i class="iconfont icon-daima"></i>关于蜂巢</a>
+            </li>
+        </ul>
+
+        <ul class="layui-nav fly-nav-user">
+
+            <!-- 未登入的状态 -->
+            <th:block th:if="${session.myBBSUser==null}">
+                <li class="layui-nav-item">
+                    <a class="iconfont icon-touxiang layui-hide-xs" href="user/login.html"></a>
+                </li>
+                <a href="http://localhost:8042/login">
+                <img th:src="@{/images/avatar/default2.png}" alt="My-BBS">
+                </a>
+                <li class="layui-nav-item">
+                    <a th:href="@{/login}">登入</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a th:href="@{/register}">注册</a>
+                </li>
+            </th:block>
+
+
+            <!-- 登入后的状态 -->
+            <th:block th:unless="${session.myBBSUser==null}">
+                <li class="layui-nav-item">
+                    <a class="fly-nav-avatar" href="javascript:;">
+                        <cite class="layui-hide-xs" th:text="${session.myBBSUser.nickName}"></cite>
+                        <th:block th:if="${session.myBBSUser.gender=='男'}">
+                            <i class="iconfont icon-nan"></i>
+                        </th:block>
+                        <th:block th:if="${session.myBBSUser.gender=='女'}">
+                            <i class="iconfont icon-nv"></i>
+                        </th:block>
+                        <th:block th:if="${session.myBBSUser.gender=='其他'}">
+<!--                            <i class="iconfont icon-biaoqing"></i>-->
+                        </th:block>
+                        <th:block th:if="${session.myBBSUser.gender=='未知'}">
+<!--                            <i class="iconfont icon-biaoqing"></i>-->
+                        </th:block>
+                        <img th:src="@{${session.myBBSUser.headImgUrl}}">
+                        <span class="layui-nav-more"></span>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a th:href="@{/userSet}"><i class="layui-icon">&#xe620;</i>个人资料</a></dd>
+                        <dd><a th:href="@{/myCenter}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的帖子</a>
+                        </dd>
+                        <hr style="margin: 5px 0;">
+                        <dd><a th:href="@{/logout}" style="text-align: center;">退出</a></dd>
+                    </dl>
+                </li>
+            </th:block>
+        </ul>
+
+
+    </div>
+</div>

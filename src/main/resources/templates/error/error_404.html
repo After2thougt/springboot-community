@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" th:href="@{/css/pear.css}">
+    <link rel="stylesheet" th:href="@{/css/error.css}">
+</head>
+<body>
+<div class="content">
+    <img th:src="@{/images/404.svg}"  alt="">
+    <div class="content-r">
+        <h1>404</h1>
+        <p>抱歉，你访问的页面不存在或仍在开发中</p>
+        <a href="http://localhost:8042/">
+        <button class="pear-btn pear-btn-primary">返回首页</button>
+        </a>
+
+    </div>
+</div>
+<script th:src="@{/js/pear.js}"></script>
+<script th:src="@{/layui/layui2.js}"></script>
+
+</body>
+</html>
